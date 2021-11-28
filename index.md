@@ -11,6 +11,7 @@ Este *Script* explota un `XXE` codificado en `base64` para poder visualizar `db.
 ```python
 pip3 install pwn html pybase64 regex
 ```
+
 ```python
 #!/usr/bin/python3
 #coding: utf-8
