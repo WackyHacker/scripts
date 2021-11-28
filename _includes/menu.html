@@ -2,7 +2,22 @@
   <div class="col-lg-8 col-lg-offset-2">
     <div class="menu">
       <ul>
-        <p>wackyhacker@~/home$_</p>
+        <span class="pag_title">wackyh4cker@parrot:~$</span>
+        <span class="blinking">_</span>
+        <style>
+        .blinking
+        {
+          animation:blinkingText 1.2s infinite;
+        }
+        @keyframes blinkingText
+        {
+          0%{     color: #2ed573;     }
+          49%{    color: #2ed573;     }
+          60%{    color: transparent; }
+          99%{    color: transparent; }
+          100%{   color: #2ed573;     }
+        }
+        </style>
       </ul>
     </div>
   </div>
