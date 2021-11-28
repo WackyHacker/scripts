@@ -1,5 +1,5 @@
 # Site settings
-title: "scripts - HackTheBox"
+title: "Scripts - HackTheBox"
 bye_message: "Thx!"
 baseurl: "/scripts/"
 url: "https://wackyhacker.github.io"
