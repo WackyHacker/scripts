@@ -1,10 +1,6 @@
 ---
 layout: content
 ---
-
-![hacker](https://user-images.githubusercontent.com/69093629/143785602-05035c80-5e98-4a79-ba6e-57523461f736.jpg)
-
-https://st2.depositphotos.com/1000393/6507/i/600/depositphotos_65076917-stock-photo-hacker-and-terrorism-fight.jpg
  
 En esta pagina publicare todos los *Scripts AutoPwn* que haga de las maquinas de HackTheBox.
 
