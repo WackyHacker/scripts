@@ -1,12 +1,12 @@
 # Site settings
-title: "gjuniioor"
+title: "scripts - HackTheBox"
 bye_message: "Thx!"
-baseurl: "/clyell/"
-url: "https://gjuniioor.github.io"
-disqus: gjuniioor
+baseurl: "/scripts/"
+url: "https://wackyhacker.github.io"
+disqus: wackyhacker
 
 # Header settings
-nick: "gjuniioor"
+nick: "wackyhacker"
 mail:
     domain: "protonmail"
     ext: "ch"
