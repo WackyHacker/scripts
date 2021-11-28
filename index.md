@@ -2,9 +2,7 @@
 layout: content
 ---
 
-# Clyell
-
-[https://gjuniioor.github.io/clyell](https://gjuniioor.github.io/clyell)
+En esta pagina publicare todos los *Scripts AutoPwn* que haga de las maquinas de HackTheBox.
 
 ### BountyHunter - HackTheBox
 
