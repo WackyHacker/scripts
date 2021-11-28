@@ -6,6 +6,14 @@ En esta pagina publicare todos los *Scripts AutoPwn* que haga de las maquinas de
 
 ### BountyHunter - HackTheBox
 
+Este *Script* explota un `XXE` codificado en `base64` para poder visualizar `db.php`, este archivo contiene credenciales en texto plano, estas sirven para acceder por `SSH` haciendo uso del usuario `development`.
+
+# Requisitos
+
+```python
+pip3 install pwn html pybase64 regex
+```
+
 ```python
 #!/usr/bin/python3
 #coding: utf-8
