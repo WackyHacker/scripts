@@ -8,7 +8,7 @@ layout: content
 
 ### BountyHunter - HackTheBox
 
-~~~python
+```python
 #!/usr/bin/python3
 #coding: utf-8
 
@@ -73,4 +73,4 @@ if __name__ == '__main__':
 
 shell = listen(lport, timeout=20).wait_for_connection()
 shell.interactive()
-~~~
+```
