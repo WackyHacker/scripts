@@ -1,8 +1,6 @@
 ---
 layout: content
 ---
- 
-En esta pagina publicare todos los *Scripts AutoPwn* que haga de las maquinas de [HackTheBox](https://hackthebox.eu/).
 
 # BountyHunter - HackTheBox
 
