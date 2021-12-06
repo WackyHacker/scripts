@@ -45,8 +45,8 @@ a {
     color: rgba(220,220,0,0.8);
 }
 .menu {
-    border-top: 1px dashed rgba(255,255,255,0.5);
-    border-bottom: 1px dashed rgba(255,255,255,0.5);
+    border-top: 1px solid rgba(255,255,255,0.5);
+    border-bottom: 1px solid rgba(255,255,255,0.5);
     margin-bottom: 10px;
 }
 .menu ul {
