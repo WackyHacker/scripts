@@ -3,7 +3,7 @@ layout: content
 ---
 <p> </p>
 
-## BountyHunter - HackTheBox
+<h2 style="color: rgba(255, 255, 255, 0.7); font-family: 'Yanone Kaffeesatz'; letter-spacing: 2px;">BountyHunter - HackTheBox</h2>
 
 Este *Script* explota un `XXE` codificado en `base64` para poder visualizar `db.php`, este archivo contiene credenciales en texto plano, estas sirven para acceder por `SSH` haciendo uso del usuario `development`.
 
