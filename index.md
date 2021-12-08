@@ -6,7 +6,7 @@ layout: content
 
 <h2 style="color: rgba(255, 255, 255, 0.7); font-family: 'Yanone Kaffeesatz'; letter-spacing: 2px;">Pikaboo - HackTheBox</h2>
 
-Este *Script* se aprovecha de un `Local File Inclusion` para derivarlo al envenenado de logs de `FTP` y por ello ganar un Shell inversión inyectando código malicioso en los campos `user` y `password`.
+Este *Script* se aprovecha de un `Local File Inclusion` para derivarlo al envenenado de logs de `FTP` y por ello ganar un Shell inverso inyectando código malicioso en los campos `user` y `password`.
 
 ```python
 #!/usr/bin/python3
