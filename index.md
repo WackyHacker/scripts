@@ -47,8 +47,8 @@ if __name__ == '__main__':
     except Exception as e:
         log.error(str(e))
 
-    shell = listen(lport, timeout=20).wait_for_connection()
-    shell.interactive()
+shell = listen(lport, timeout=20).wait_for_connection()
+shell.interactive()
 ```
 
 <h2 style="color: rgba(255, 255, 255, 0.7); font-family: 'Yanone Kaffeesatz'; letter-spacing: 2px;">BountyHunter - HackTheBox</h2>
