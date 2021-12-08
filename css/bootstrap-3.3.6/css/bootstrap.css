@@ -9,6 +9,15 @@ html {
   -webkit-text-size-adjust: 100%;
       -ms-text-size-adjust: 100%;
 }
+
+code {
+    padding: 1px 3px;
+    font-size: 90%;
+    color: #d7d7d7;
+    background-color: #3c3b3b9e;
+    border-radius: 4px;
+}
+
 body {
   margin: 0;
 }
