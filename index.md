@@ -25,10 +25,9 @@ lport = 443
 def def_handler(sig,frame):
     print("Saliendo...")
     sys.exit(1)
-signal.signal(signal.SIGINT, def_handler)
+    signal.signal(signal.SIGINT, def_handler)
 
 def makeRequest():
-
     p1 = log.progress("Payload")
     p1.status("Inyectando [*]")
 
@@ -73,7 +72,7 @@ lport = 443
 
 def def_handler(sig, frame):
     print("Saliendo...")
-    sys.exit(0)
+    sys.exit(1)
     signal.signal(signal.SIGINT, def_handler)
 
 def MakeRequest():
