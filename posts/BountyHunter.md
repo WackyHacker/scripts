@@ -1,3 +1,9 @@
+---
+layout: blog
+title: "Category List"
+permalink: /BountyHunter/
+---
+
 <p> </p>
 
 <h2 style="color: rgba(255, 255, 255, 0.7); font-family: 'Yanone Kaffeesatz'; letter-spacing: 2px;">BountyHunter - HackTheBox</h2>
