@@ -1583,7 +1583,7 @@ pre code {
   padding: 0;
   font-size: inherit;
   color: inherit;
-  background-color: transparent;
+  background-color: #000;
   border-radius: 0;
 }
 .pre-scrollable {
