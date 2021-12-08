@@ -51,7 +51,7 @@ if __name__ == '__main__':
     shell.interactive()
 ```
 
-<hr>
+<hr style="color: rgba(255,255,255,0.5);">
 
 <h2 style="color: rgba(255, 255, 255, 0.7); font-family: 'Yanone Kaffeesatz'; letter-spacing: 2px;">BountyHunter - HackTheBox</h2>
 
