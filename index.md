@@ -11,8 +11,6 @@ Este *Script* se aprovecha de un `Local File Inclusion` para derivarlo al envene
 * Acceso como `www-data`
 * Shell interactivo
 
-- Acceso como `www-data` ☑
-
 ```python
 #!/usr/bin/python3
 
