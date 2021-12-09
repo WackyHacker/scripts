@@ -8,6 +8,8 @@ layout: content
 
 Este *Script* se aprovecha de un `Local File Inclusion` para derivarlo al envenenado de logs de `FTP` y por ello ganar un Shell inverso inyectando código malicioso en los campos `user` y `password`.
 
+- Acceso como `www-data` ☑
+
 ```python
 #!/usr/bin/python3
 
