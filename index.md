@@ -58,6 +58,9 @@ shell.interactive()
 
 Este *Script* explota un `XML enternal entity` codificado en `base64` para poder visualizar `db.php`, este archivo contiene credenciales en texto plano, estas sirven para acceder por `SSH` haciendo uso del usuario `development`.
 
+* Acceso como `development`
+* Shell interactivo
+
 ```python
 #!/usr/bin/python3
 #coding: utf-8
