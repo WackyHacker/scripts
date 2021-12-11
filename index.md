@@ -6,7 +6,7 @@ layout: content
 
 <h2 style="color: rgba(255, 255, 255, 0.7); font-family: 'Yanone Kaffeesatz'; letter-spacing: 2px;">Writer - HackTheBox</h2>
 
-```bash
+```python
 #!/usr/bin/python3
 
 import signal
