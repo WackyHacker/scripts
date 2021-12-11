@@ -8,6 +8,9 @@ layout: content
 
 Este *Script* abusa de una mala sanitizacion en cuanto a código en `Flask` y permite ganar **ejecución remota de comandos** a través de la concatenación de código malicioso en el nombre de una imagen con extensión `.jpg`.
 
+* Acceso como `www-data`
+* Shell interactivo
+
 ```python
 #!/usr/bin/python3
 
