@@ -4,7 +4,7 @@ layout: content
 
 <p> </p>
 
-<h2 style="color: rgba(255, 255, 255, 0.7); font-family: 'Yanone Kaffeesatz'; letter-spacing: 2px;">Writer - HackTheBox</h2>
+<h2 style="color: rgba(255, 255, 255, 0.7); font-family: 'Yanone Kaffeesatz'; letter-spacing: 2px; text-decoration: underline #7e7676;">Writer - HackTheBox</h2>
 
 Este *Script* abusa de una mala sanitizacion en cuanto a código en `Flask` y permite ganar **ejecución remota de comandos** a través de la concatenación de código malicioso en el nombre de una imagen con extensión `.jpg`.
 
@@ -85,7 +85,7 @@ shell = listen(lport, timeout=20).wait_for_connection()
 shell.interactive()
 ```
 
-<h2 style="color: rgba(255, 255, 255, 0.7); font-family: 'Yanone Kaffeesatz'; letter-spacing: 2px;">Pikaboo - HackTheBox</h2>
+<h2 style="color: rgba(255, 255, 255, 0.7); font-family: 'Yanone Kaffeesatz'; letter-spacing: 2px; text-decoration: underline #7e7676;">Pikaboo - HackTheBox</h2>
 
 Este *Script* se aprovecha de un `Local File Inclusion` para derivarlo al envenenado de logs de `FTP` y por ello ganar un Shell inverso inyectando código malicioso en los campos `user` y `password` en la autenticación.
 
@@ -135,7 +135,7 @@ shell = listen(lport, timeout=20).wait_for_connection()
 shell.interactive()
 ```
 
-<h2 style="color: rgba(255, 255, 255, 0.7); font-family: 'Yanone Kaffeesatz'; letter-spacing: 2px;">BountyHunter - HackTheBox</h2>
+<h2 style="color: rgba(255, 255, 255, 0.7); font-family: 'Yanone Kaffeesatz'; letter-spacing: 2px; text-decoration: underline #7e7676;">BountyHunter - HackTheBox</h2>
 
 Este *Script* explota un `XML enternal entity` codificado en `base64` para poder visualizar `db.php`, este archivo contiene credenciales en texto plano, estas sirven para acceder por `SSH` haciendo uso del usuario `development`.
 
