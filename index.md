@@ -14,6 +14,8 @@ Este *Script* explota un campo de reseteo de contraseña mal configurado para ac
 #!/usr/bin/python3
 #coding: utf-8
 
+# Uso: python3 -m http.server <- Ejecutar en la misma carpeta que el autopwn
+
 from pwn import *
 import sys
 import requests
