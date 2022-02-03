@@ -3,9 +3,9 @@ layout: content
 ---
 <p> </p>
 
-Este script explota un campo de reseteo de contraseña mal configurado para acceder como usuario admin y subir un plugin malicioso ganando un Shell inverso por `nc`, tambien se aprovecha del permiso `SUID` `pkexec` para escalar privilegios.
-
 <h2 style="color: rgba(255, 255, 255, 0.7); font-family: 'Yanone Kaffeesatz'; letter-spacing: 2px; text-decoration: underline #7e7676;">Horizontall - HackTheBox</h2>
+
+Este script explota un campo de reseteo de contraseña mal configurado para acceder como usuario admin y subir un plugin malicioso ganando un Shell inverso por `nc`, tambien se aprovecha del permiso `SUID` `pkexec` para escalar privilegios.
 
 ```python
 #!/usr/bin/python3
