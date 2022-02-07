@@ -33,6 +33,7 @@ def def_handler(sig,frame):
 signal.signal(signal.SIGINT, def_handler)
 
 class Exploit:
+
 	def __init__(self, main_url, password, filename):
 		self.__url = main_url
 		self.__password = password
