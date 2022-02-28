@@ -6,7 +6,7 @@ layout: content
 
 <h2 style="color: rgba(255, 255, 255, 0.7); font-family: 'Yanone Kaffeesatz'; letter-spacing: 2px; text-decoration: underline #7e7676;">GoodGames - HackTheBox</h2>
 
-Este *Script* explota una inyección `SQL` para interceptar un hash `MD5`, también aprovecha un `Server Side Template Injection` para derivar a la ejecución de código arbitrario mediante sentencias maliciosas de `Jinja2`.
+Este *Script* explota una inyección `SQL` para volcar un hash `MD5`, también se aprovecha de un `Server Side Template Injection` para derivar a la ejecución de código arbitrario mediante sentencias maliciosas del motor de plantillas web `Jinja2`.
 
 * Acceso como `root` en `contenedor`
 * Shell interactivo
