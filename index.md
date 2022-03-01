@@ -103,7 +103,6 @@ from pwn import *
 import sys
 import requests
 import signal
-import subprocess
 import urllib3
 import json
 import zipfile 
