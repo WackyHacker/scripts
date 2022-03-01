@@ -13,6 +13,10 @@
     </style>
     <p>
     <span class="reserved">char</span> nick[<span class="number">9</span>] = <span class="string">WackyH4cker</span>;
+    </p>
+    <p>
+      printf(<a href="https://{{ site.source_code.server }}/{{ site.source_code.nick }}" target="_blank"><span class="string">"https://{{ site.source_code.server }}/<span class="reserved">%s\n</span>"</span></a>,nick);
+    </p>
     <style type="text/css">
       .reserved {
         color: rgb(255 255 255);
@@ -26,11 +30,13 @@
         font-size: 12px;
         line-height: unset !important;
       }
+      .string {
+        color: #b2b2b29e;
+        font-family: monospace;
+        font-size: 12px;
+        line-height: unset !important;
+      }
     </style>
-    </p>
-    <p>
-      printf(<a href="https://{{ site.source_code.server }}/{{ site.source_code.nick }}" target="_blank"><span class="string">"https://{{ site.source_code.server }}/<span class="reserved">%s\n</span>"</span></a>,nick);
-    </p>
     <!-- <p>
             printf(<a href="https://{{ site.blog.nick }}.{{ site.blog.server }}" target="_blank"><span class="string">"https://<span class="reserved">%s</span>.{{ site.blog.server }}<span class="reserved">\n</span>"</span></a>,nick);
         </p> -->
