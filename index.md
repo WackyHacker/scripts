@@ -82,7 +82,6 @@ if __name__ == '__main__':
 shell = listen(443, timeout=20).wait_for_connection()
 shell.interactive()
 ``` 
-<code>{{fasfdsa</code>
 
 <p> </p>
 
