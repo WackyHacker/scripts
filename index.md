@@ -6,7 +6,7 @@ layout: content
 
 <h2 style="color: rgba(255, 255, 255, 0.7); font-family: 'Yanone Kaffeesatz'; letter-spacing: 2px; text-decoration: underline #7e7676;">Hancliffe - HackTheBox</h2>
 
-Este *Script* aprovecha la mala desinfección de un programa para inyectar *shellcode* y ganar un Shell inverso abusando de la reutilización de *sockets* por un límite de *buffer* definido.
+Este *Script* aprovecha la mala desinfección de un programa para inyectar *shellcode* y ganar un Shell inverso abusando de la reutilización de *sockets* por un límite de *buffer* definido muy pequeño.
 
 ```python
 #!/usr/bin/python3
