@@ -8,6 +8,9 @@ layout: content
 
 Este *Script* aprovecha la mala desinfección de un programa para inyectar *shellcode* y ganar un Shell inverso abusando de la reutilización de *sockets* por un límite de *buffer* definido muy pequeño.
 
+* Acceso como `Administrator`
+* Shell inverso por `nc`
+
 ```python
 #!/usr/bin/python3
 
