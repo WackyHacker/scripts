@@ -5,7 +5,7 @@ layout: content
 
 <h2 style="color: rgba(255, 255, 255, 0.7); font-family: 'Yanone Kaffeesatz'; letter-spacing: 2px; text-decoration: underline #7e7676;">Devzat - HackTheBox</h2>
 
-Este *Script* aprovecha la mala desinfección del código de lado del servidor para concatenar comandos y ganar **ejecución remota de código**.
+Este *Script* aprovecha la mala desinfección del código de lado del servidor para concatenar comandos y ganar **ejecución remota de código** enviando una petición POST con datos JSON.
 
 * Acceso como `patrick`
 * Shell inverso por `nc`
