@@ -5,7 +5,7 @@ layout: content
 
 <h2 style="color: rgba(255, 255, 255, 0.7); font-family: 'Yanone Kaffeesatz'; letter-spacing: 2px; text-decoration: underline #7e7676;">Altered - HackTheBox</h2>
 
-Este *Script* abusa de una Inyeccion SQL para subir un Shell inverso enviando datos JSON.
+Este *Script* abusa de una Inyección SQL para posteriormente subir un Shell inverso haciendo uso de la utilidad `into outfile` enviando datos JSON.
 
 * Acceso como `www-data`
 * Shell inverso
